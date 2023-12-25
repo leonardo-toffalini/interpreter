@@ -17,7 +17,7 @@ char _peekChar(Lexer *l);
 //////////////////////////////////////////////////////////////////////
 
 // create a new Lexer with the input string
-Lexer get_lexer(char *inputString) {
+Lexer getLexer(char *inputString) {
   Lexer l;
   l.inputString = inputString;
   _readChar(&l);
@@ -85,7 +85,7 @@ Token nextToken(Lexer *l) {
     t = (Token){RBRACE, "}"};
     break;
   case 0:
-    t = (Token){EOF, ""};
+    t = (Token){EOF_T, ""};
     break;
   default:
     if (_isLetter(l->ch)) {

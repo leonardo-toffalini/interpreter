@@ -3,7 +3,7 @@
 
 typedef enum {
   ILLEGAL,
-  EOF,
+  EOF_T,
 
   // Identifiers + literals
   IDENT,
@@ -47,5 +47,6 @@ typedef struct Token {
 } Token;
 
 TokenType lookupIdentifier(char *identifier);
+char *tokenToString(TokenType t);
 
 #endif // !TOKEN_H

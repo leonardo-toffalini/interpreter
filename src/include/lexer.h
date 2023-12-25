@@ -1,3 +1,9 @@
+#ifndef LEXER_H
+#define LEXER_H
+
+#include "token.h"
+#include <stdbool.h>
+
 typedef struct Lexer {
   char *inputString;
   int position;
@@ -5,4 +11,7 @@ typedef struct Lexer {
   char ch;
 } Lexer;
 
-Lexer get_lexer(char *inputString);
+Lexer getLexer(char *inputString);
+Token nextToken(Lexer *l);
+
+#endif // !LEXER_H
