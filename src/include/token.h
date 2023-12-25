@@ -32,4 +32,6 @@ typedef struct Token {
   char *Literal;
 } Token;
 
+TokenType lookupIdentifier(char *identifier);
+
 #endif // !TOKEN_H

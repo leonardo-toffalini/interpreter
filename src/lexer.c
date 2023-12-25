@@ -5,8 +5,11 @@
 #include <string.h>
 
 void _readChar(Lexer *l);
+void _skipwhitespace(Lexer *l);
 bool _isLetter(char ch);
+bool _isDigit(char ch);
 char *_readIdentifier(Lexer *l);
+char *_readNumber(Lexer *l);
 
 //////////////////////////////////////////////////////////////////////
 /// ******               PUBLIC FUNCTIONS                   ****** ///
@@ -22,6 +25,8 @@ Lexer get_lexer(char *inputString) {
 
 Token nextToken(Lexer *l) {
   Token t;
+
+  _skipwhitespace(l);
 
   switch (l->ch) {
   case '=':
@@ -54,6 +59,11 @@ Token nextToken(Lexer *l) {
   default:
     if (_isLetter(l->ch)) {
       t.Literal = _readIdentifier(l);
+      t.Type = lookupIdentifier(t.Literal);
+      return t;
+    } else if (_isDigit(l->ch)) {
+      char *num = _readNumber(l);
+      t = (Token){INT, num};
       return t;
     } else {
       t = (Token){ILLEGAL, &l->ch};
@@ -79,10 +89,20 @@ void _readChar(Lexer *l) {
   l->readPosition++;
 }
 
+// skip whitespace characters like space, tab, newlin etc.
+void _skipwhitespace(Lexer *l) {
+  while (l->ch == ' ' || l->ch == '\n' || l->ch == '\r') {
+    _readChar(l);
+  }
+}
+
 // return true if ch is a letter
-bool _is_letter(char ch) {
+bool _isLetter(char ch) {
   return ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_');
 }
+
+// return true if ch is a digit
+bool _isDigit(char ch) { return ((ch >= '0' && ch <= '9')); }
 
 // read in and return the name of the identifier
 char *_readIdentifier(Lexer *l) {
@@ -94,4 +114,16 @@ char *_readIdentifier(Lexer *l) {
   char *identifier = (char *)calloc(identifierLength, sizeof(char));
   strncpy(identifier, l->inputString + position, identifierLength);
   return identifier;
+}
+
+// read the next number and advance the position
+char *_readNumber(Lexer *l) {
+  int position = l->position;
+  while (_isDigit(l->ch)) {
+    _readChar(l);
+  }
+  int numberLength = l->position - position;
+  char *number = (char *)calloc(numberLength, sizeof(char));
+  strncpy(number, l->inputString + position, numberLength);
+  return number;
 }
