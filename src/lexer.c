@@ -10,6 +10,7 @@ bool _isLetter(char ch);
 bool _isDigit(char ch);
 char *_readIdentifier(Lexer *l);
 char *_readNumber(Lexer *l);
+char _peekChar(Lexer *l);
 
 //////////////////////////////////////////////////////////////////////
 /// ******               PUBLIC FUNCTIONS                   ****** ///
@@ -30,7 +31,43 @@ Token nextToken(Lexer *l) {
 
   switch (l->ch) {
   case '=':
-    t = (Token){ASSIGN, "="};
+    if (_peekChar(l) == '=') {
+      _readChar(l);
+      t = (Token){EQ, "=="};
+      break;
+    } else {
+      t = (Token){ASSIGN, "="};
+      break;
+    }
+  case '+':
+    t = (Token){PLUS, "+"};
+    break;
+  case '-':
+    t = (Token){MINUS, "-"};
+    break;
+  case '!':
+    if (_peekChar(l) == '=') {
+      _readChar(l);
+      t = (Token){NOT_EQ, "!="};
+      break;
+    } else {
+      t = (Token){BANG, "!"};
+      break;
+    }
+  case '*':
+    t = (Token){ASTERISK, "*"};
+    break;
+  case '/':
+    t = (Token){SLASH, "/"};
+    break;
+  case '<':
+    t = (Token){LT, "<"};
+    break;
+  case '>':
+    t = (Token){GT, ">"};
+    break;
+  case ',':
+    t = (Token){COMMA, ","};
     break;
   case ';':
     t = (Token){SEMICOLON, ";"};
@@ -40,12 +77,6 @@ Token nextToken(Lexer *l) {
     break;
   case ')':
     t = (Token){RPAREN, ")"};
-    break;
-  case ',':
-    t = (Token){COMMA, ","};
-    break;
-  case '+':
-    t = (Token){PLUS, "+"};
     break;
   case '{':
     t = (Token){LBRACE, "{"};
@@ -126,4 +157,12 @@ char *_readNumber(Lexer *l) {
   char *number = (char *)calloc(numberLength, sizeof(char));
   strncpy(number, l->inputString + position, numberLength);
   return number;
+}
+
+char _peekChar(Lexer *l) {
+  if (l->readPosition >= strlen(l->inputString)) {
+    return 0;
+  } else {
+    return l->inputString[l->readPosition];
+  }
 }

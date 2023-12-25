@@ -11,7 +11,16 @@ typedef enum {
 
   // Operators
   ASSIGN,
+  EQ,
   PLUS,
+  MINUS,
+  BANG,
+  NOT_EQ,
+  ASTERISK,
+  SLASH,
+
+  LT,
+  GT,
 
   // Delimiters
   COMMA,
@@ -25,6 +34,11 @@ typedef enum {
   // Keywords
   FUNCTION,
   LET,
+  TRUE,
+  FALSE,
+  IF,
+  ELSE,
+  RETURN
 } TokenType;
 
 typedef struct Token {
