@@ -1,7 +1,6 @@
 #include "include/lexer.h"
 #include "include/token.h"
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -18,7 +17,7 @@ char _peekChar(Lexer *l);
 //////////////////////////////////////////////////////////////////////
 
 // create a new Lexer with the input string
-Lexer getLexer(char *inputString) {
+Lexer initLexer(char *inputString) {
   Lexer l;
   l.inputString = inputString;
   _readChar(&l);

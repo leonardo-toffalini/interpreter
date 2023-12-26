@@ -17,7 +17,7 @@ void start() {
       return;
     }
 
-    Lexer l = getLexer(input);
+    Lexer l = initLexer(input);
 
     while (true) {
       Token t = nextToken(&l);

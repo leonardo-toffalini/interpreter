@@ -11,7 +11,7 @@ typedef struct Lexer {
   char ch;
 } Lexer;
 
-Lexer getLexer(char *inputString);
+Lexer initLexer(char *inputString);
 Token nextToken(Lexer *l);
 
 #endif // !LEXER_H
