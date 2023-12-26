@@ -3,7 +3,7 @@
 
 typedef enum {
   ILLEGAL,
-  EOF_T,
+  EOF_T, // note: name must be EOF_T not EOF because EOF is a C keyword
 
   // Identifiers + literals
   IDENT,

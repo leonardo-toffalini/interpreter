@@ -1,6 +1,7 @@
 #include "include/lexer.h"
 #include "include/token.h"
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -36,7 +37,8 @@ Token nextToken(Lexer *l) {
       t = (Token){EQ, "=="};
       break;
     } else {
-      t = (Token){ASSIGN, "="};
+      t.Type = ASSIGN;
+      t.Literal = "=";
       break;
     }
   case '+':
@@ -89,13 +91,11 @@ Token nextToken(Lexer *l) {
     break;
   default:
     if (_isLetter(l->ch)) {
-      t.Literal = _readIdentifier(l);
-      t.Type = lookupIdentifier(t.Literal);
-      return t;
+      char *identifier = _readIdentifier(l);
+      return (Token){lookupIdentifier(identifier), identifier};
     } else if (_isDigit(l->ch)) {
       char *num = _readNumber(l);
-      t = (Token){INT, num};
-      return t;
+      return (Token){INT, num};
     } else {
       t = (Token){ILLEGAL, &l->ch};
     }

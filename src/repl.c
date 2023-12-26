@@ -1,6 +1,5 @@
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include "include/lexer.h"
@@ -19,9 +18,6 @@ void start() {
     }
 
     Lexer l = getLexer(input);
-
-    Token t = nextToken(&l);
-    char *typeString = tokenToString(t.Type);
 
     while (true) {
       Token t = nextToken(&l);
