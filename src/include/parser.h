@@ -4,7 +4,6 @@
 #include "lexer.h"
 #include "statement.h"
 #include "token.h"
-#include <cstddef>
 
 typedef struct Parser {
   Lexer *l;
