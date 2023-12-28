@@ -6,3 +6,4 @@ test: src/tests/lexer_test.c src/tests/test_all.c src/lexer.c src/token.c
 
 clean:
 	rm -f repl *.o
+	rm -f test *.o
