@@ -20,6 +20,8 @@ char _peekChar(Lexer *l);
 Lexer initLexer(char *inputString) {
   Lexer l;
   l.inputString = inputString;
+  l.readPosition = 0;
+  l.position = 0;
   _readChar(&l);
   return l;
 }
