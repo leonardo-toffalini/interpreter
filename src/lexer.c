@@ -5,7 +5,7 @@
 #include <string.h>
 
 void _readChar(Lexer *l);
-void _skipwhitespace(Lexer *l);
+void _skipWhitespace(Lexer *l);
 bool _isLetter(char ch);
 bool _isDigit(char ch);
 char *_readIdentifier(Lexer *l);
@@ -27,7 +27,7 @@ Lexer initLexer(char *inputString) {
 Token nextToken(Lexer *l) {
   Token t;
 
-  _skipwhitespace(l);
+  _skipWhitespace(l);
 
   switch (l->ch) {
   case '=':
@@ -120,7 +120,7 @@ void _readChar(Lexer *l) {
 }
 
 // skip whitespace characters like space, tab, newlin etc.
-void _skipwhitespace(Lexer *l) {
+void _skipWhitespace(Lexer *l) {
   while (l->ch == ' ' || l->ch == '\n' || l->ch == '\r') {
     _readChar(l);
   }

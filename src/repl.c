@@ -17,6 +17,8 @@ void start() {
       return;
     }
 
+    printf("input: %s", input);
+
     Lexer l = initLexer(input);
 
     while (true) {
@@ -25,7 +27,7 @@ void start() {
         return;
       }
       char *typeString = tokenToString(t.Type);
-      printf("{Type: %s, Value: '%s'}\n", typeString, t.Literal);
+      printf("{Type: %s, Literal: '%s'}\n", typeString, t.Literal);
     }
   }
 }
