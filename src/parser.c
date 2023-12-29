@@ -3,12 +3,15 @@
 #include "include/statement.h"
 #include "include/token.h"
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 void _parserNextToken(Parser *p);
 Statement _parseStatement(Parser *p);
 Statement _parseLetStatement(Parser *p);
 bool _expectPeek(Parser *p, TokenType t);
 bool _curTokenIs(Parser *p, TokenType t);
+void _peekError(Parser *p, TokenType t);
 
 Parser *initParser(Lexer *l) {
   Parser *p;
@@ -19,20 +22,31 @@ Parser *initParser(Lexer *l) {
   return p;
 }
 
-StatementList parseProgram(Parser *parser) {
+StatementList parseProgram(Parser *p) {
   StatementList prog = newStatementList();
   Statement curStatement;
 
-  while (parser->curToken.Type != EOF_T) {
-    curStatement = _parseStatement(parser);
+  while (!_curTokenIs(p, EOF_T)) {
+    curStatement = _parseStatement(p);
     if (curStatement.type == NULL_STMT) {
       return prog;
     }
     appendStatementList(&prog, curStatement);
-    _parserNextToken(parser);
+    _parserNextToken(p);
   }
 
   return prog;
+}
+
+bool checkParserErrors(Parser *p) {
+  if (p->numErrors == 0)
+    return true;
+
+  printf("Parser has %d errors:\n", p->numErrors);
+  for (int i = 0; i < p->numErrors; i++) {
+    printf("\tError: %s\n", p->errors[i]);
+  }
+  return false;
 }
 
 void _parserNextToken(Parser *p) {
@@ -41,9 +55,14 @@ void _parserNextToken(Parser *p) {
 }
 
 Statement _parseStatement(Parser *p) {
+  Statement null;
+  null.type = NULL_STMT;
+
   switch (p->curToken.Type) {
   case LET:
     return _parseLetStatement(p);
+  default:
+    return null;
   }
 }
 
@@ -79,6 +98,20 @@ bool _expectPeek(Parser *p, TokenType t) {
     _parserNextToken(p);
     return true;
   } else {
+    _peekError(p, t);
     return false;
   }
+}
+
+void _peekError(Parser *p, TokenType t) {
+  char *expextedTokenString = tokenToString(t);
+  char *actualTokenString = tokenToString(p->peekToken.Type);
+
+  sprintf(p->errors[p->numErrors],
+          "Expected next token to be %s but got %s instead.\n",
+          expextedTokenString, actualTokenString);
+
+  free(expextedTokenString);
+  free(actualTokenString);
+  p->numErrors++;
 }

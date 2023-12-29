@@ -25,7 +25,7 @@ typedef struct Statement {
 typedef struct StatementList {
   Statement *statements;
   size_t count;
-  size_t data;
+  size_t capacity;
 } StatementList;
 
 StatementList newStatementList();

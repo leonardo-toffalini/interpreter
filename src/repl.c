@@ -17,8 +17,6 @@ void start() {
       return;
     }
 
-    printf("input: %s", input);
-
     Lexer l = initLexer(input);
 
     while (true) {

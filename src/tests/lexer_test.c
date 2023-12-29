@@ -5,7 +5,7 @@
 #include "../include/lexer.h"
 #include "lexer_test.h"
 
-void test_simple() {
+void testSimple() {
   char *input = "=+(){},;\n";
   printf("input: %s", input);
 
@@ -48,7 +48,7 @@ void test_simple() {
   }
 }
 
-void test_code() {
+void testCode() {
   char *input = "let five = 5;\n"
                 "let ten = 10;\n"
                 "let add = fn(x, y) {\n"
@@ -177,10 +177,10 @@ void test_code() {
   }
 }
 
-void run_all_lexer_tests() {
+void runAllLexerTests() {
   printf("Test Simple:\n");
-  test_simple();
+  testSimple();
 
   printf("Test Code:\n");
-  test_code();
+  testCode();
 }

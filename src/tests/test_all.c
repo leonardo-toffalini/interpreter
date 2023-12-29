@@ -1,8 +1,10 @@
 #include "lexer_test.h"
+#include "parser_test.h"
 #include <stdio.h>
 
 int main() {
-  run_all_lexer_tests();
+  runAllLexerTests();
+  runAllParserTests();
   printf("done\n");
   return 0;
 }
