@@ -14,7 +14,7 @@ typedef struct Parser {
   int numErrors;
 } Parser;
 
-Parser *initParser(Lexer *l);
+Parser initParser(Lexer *l);
 StatementList parseProgram(Parser *p);
 bool checkParserErrors(Parser *p);
 

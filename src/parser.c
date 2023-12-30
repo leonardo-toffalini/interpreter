@@ -13,11 +13,14 @@ bool _expectPeek(Parser *p, TokenType t);
 bool _curTokenIs(Parser *p, TokenType t);
 void _peekError(Parser *p, TokenType t);
 
-Parser *initParser(Lexer *l) {
-  Parser *p;
+Parser initParser(Lexer *l) {
+  Parser p;
 
-  _parserNextToken(p);
-  _parserNextToken(p);
+  p.l = l;
+  p.numErrors = 0;
+
+  _parserNextToken(&p);
+  _parserNextToken(&p);
 
   return p;
 }

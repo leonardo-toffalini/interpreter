@@ -31,11 +31,11 @@ bool testBadLetStatements() {
                         "let 838383 = x;\n";
 
   Lexer l = initLexer(input_string);
-  Parser *p = initParser(&l);
+  Parser p = initParser(&l);
 
-  parseProgram(p);
+  parseProgram(&p);
   // Make sure we got some errors up in here
-  assert(!checkParserErrors(p));
+  assert(!checkParserErrors(&p));
   return true;
 }
 
@@ -45,10 +45,10 @@ bool testLetStatements() {
                         "let foobar = 838383;\n";
 
   Lexer l = initLexer(input_string);
-  Parser *p = initParser(&l);
+  Parser p = initParser(&l);
 
-  StatementList prog = parseProgram(p);
-  assert(checkParserErrors(p));
+  StatementList prog = parseProgram(&p);
+  assert(checkParserErrors(&p));
   if (prog.count == 0) {
     printf("parse_program has no statements");
     return false;
@@ -68,4 +68,6 @@ bool testLetStatements() {
 void runAllParserTests() {
   assert(testLetStatements());
   assert(testBadLetStatements());
+  if (testBadLetStatements() && testLetStatements())
+    printf("Parser tests ran successfully!\n");
 }

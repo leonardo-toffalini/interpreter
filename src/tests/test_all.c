@@ -5,6 +5,6 @@
 int main() {
   runAllLexerTests();
   runAllParserTests();
-  printf("done\n");
+  printf("All tests done\n");
   return 0;
 }
