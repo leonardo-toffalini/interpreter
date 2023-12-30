@@ -9,6 +9,7 @@
 void _parserNextToken(Parser *p);
 Statement _parseStatement(Parser *p);
 Statement _parseLetStatement(Parser *p);
+Statement _parseReturnStatement(Parser *p);
 bool _expectPeek(Parser *p, TokenType t);
 bool _curTokenIs(Parser *p, TokenType t);
 void _peekError(Parser *p, TokenType t);
@@ -64,6 +65,8 @@ Statement _parseStatement(Parser *p) {
   switch (p->curToken.Type) {
   case LET:
     return _parseLetStatement(p);
+  case RETURN:
+    return _parseReturnStatement(p);
   default:
     return null;
   }
@@ -80,6 +83,10 @@ Statement _parseLetStatement(Parser *p) {
 
   letStmt.identifier = p->curToken;
 
+  if (!_expectPeek(p, ASSIGN)) {
+    return newStatement;
+  }
+
   // TODO: We're skipping the expressions until we encounter a semicolon
 
   while (!_curTokenIs(p, SEMICOLON)) {
@@ -89,6 +96,24 @@ Statement _parseLetStatement(Parser *p) {
   newStatement.type = LET_STMT;
   newStatement.data.let = letStmt;
 
+  return newStatement;
+}
+
+Statement _parseReturnStatement(Parser *p) {
+  ReturnStatement retStmt;
+  Statement newStatement;
+  newStatement.type = NULL_STMT;
+
+  _parserNextToken(p);
+
+  // TODO: We're skipping the expressions until we encounter a semicolon
+
+  while (!_curTokenIs(p, SEMICOLON)) {
+    _parserNextToken(p);
+  }
+
+  newStatement.type = RETURN_STMT;
+  newStatement.data.ret = retStmt;
   return newStatement;
 }
 

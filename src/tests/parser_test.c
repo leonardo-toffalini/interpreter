@@ -26,11 +26,11 @@ bool testLetStatement(Statement s, char *name) {
 }
 
 bool testBadLetStatements() {
-  char input_string[] = "let x 5;\n"
-                        "let = 10;\n"
-                        "let 838383 = x;\n";
+  char inputString[] = "let x = 5;\n"
+                       "let = 10;\n"
+                       "let 838383 = x;\n";
 
-  Lexer l = initLexer(input_string);
+  Lexer l = initLexer(inputString);
   Parser p = initParser(&l);
 
   parseProgram(&p);
@@ -66,8 +66,9 @@ bool testLetStatements() {
 }
 
 void runAllParserTests() {
+  printf("Test correct syntax.\n");
   assert(testLetStatements());
+  printf("Test incorrect syntax.\n");
   assert(testBadLetStatements());
-  if (testBadLetStatements() && testLetStatements())
-    printf("Parser tests ran successfully!\n");
+  printf("Parser tests ran successfully!\n");
 }
