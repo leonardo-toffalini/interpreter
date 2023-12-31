@@ -6,7 +6,7 @@
 
 typedef struct Expression Expression;
 
-typedef enum { LET_STMT, RETURN_STMT, NULL_STMT } StatementType;
+typedef enum { LET_STMT, RETURN_STMT, EXPR_STMT, NULL_STMT } StatementType;
 
 typedef struct LetStatement {
   Token identifier;
@@ -24,6 +24,7 @@ typedef struct ExpressionStatement {
 typedef union {
   LetStatement let;
   ReturnStatement ret;
+  ExpressionStatement expr;
 } StatementData;
 
 typedef struct Statement {

@@ -1,4 +1,5 @@
 #include "include/parser.h"
+#include "include/ast.h"
 #include "include/lexer.h"
 #include "include/statement.h"
 #include "include/token.h"
@@ -10,9 +11,17 @@ void _parserNextToken(Parser *p);
 Statement _parseStatement(Parser *p);
 Statement _parseLetStatement(Parser *p);
 Statement _parseReturnStatement(Parser *p);
+Statement _parseExpressionStatement(Parser *p);
+Expression *_parseExpression(Parser *p, Precedence prio);
+Expression *_parsePrefix(Parser *p);
 bool _expectPeek(Parser *p, TokenType t);
 bool _curTokenIs(Parser *p, TokenType t);
+bool _peekTokenIs(Parser *p, TokenType t);
 void _peekError(Parser *p, TokenType t);
+
+//////////////////////////////////////////////////////////////////////
+/// ******               PUBLIC FUNCTIONS                   ****** ///
+//////////////////////////////////////////////////////////////////////
 
 Parser initParser(Lexer *l) {
   Parser p;
@@ -53,6 +62,10 @@ bool checkParserErrors(Parser *p) {
   return false;
 }
 
+//////////////////////////////////////////////////////////////////////
+/// ******               PRIVATE FUNCTIONS                  ****** ///
+//////////////////////////////////////////////////////////////////////
+
 void _parserNextToken(Parser *p) {
   p->curToken = p->peekToken;
   p->peekToken = nextToken(p->l);
@@ -68,7 +81,7 @@ Statement _parseStatement(Parser *p) {
   case RETURN:
     return _parseReturnStatement(p);
   default:
-    return null;
+    return _parseExpressionStatement(p);
   }
 }
 
@@ -115,6 +128,37 @@ Statement _parseReturnStatement(Parser *p) {
   newStatement.type = RETURN_STMT;
   newStatement.data.ret = retStmt;
   return newStatement;
+}
+
+Statement _parseExpressionStatement(Parser *p) {
+  ExpressionStatement exprStmt;
+  Statement newStatement;
+  newStatement.type = NULL_STMT;
+
+  exprStmt.expressionValue = _parseExpression(p, LOWEST_PRIO);
+
+  if (_peekTokenIs(p, SEMICOLON)) {
+    _parserNextToken(p);
+  }
+
+  newStatement.type = EXPR_STMT;
+  newStatement.data.expr = exprStmt;
+  return newStatement;
+}
+
+Expression *_parseExpression(Parser *p, Precedence prio) {
+  Expression *leftExpression;
+  switch (p->curToken.Type) {
+  case MINUS:
+  case BANG:
+    leftExpression = _parsePrefix(p);
+    break;
+
+  default:
+    leftExpression = NULL;
+    break;
+  }
+  return leftExpression;
 }
 
 bool _curTokenIs(Parser *p, TokenType t) { return p->curToken.Type == t; }
